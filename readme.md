@@ -2,7 +2,7 @@
 Nos valemos de un endpoint descubierto por la comunidad para realizar algunas consultas.
 
 # ADVERTENCIA
-Este código es con fines didácticos, no tiene otra finalidad mas que enseñar diferentes aspectos de programación con un ejemplo préctico.
+Este código es con fines didácticos, no tiene otra finalidad mas que enseñar diferentes aspectos de programación con un ejemplo práctico.
 
 # Puntos de interes
 Todos los ejemplos se basan en un módulo (```get-cedula```) el cual define una función que retorna una promesa.
@@ -53,7 +53,7 @@ Ejemplo
 
 ```bash
 $ node rango.js -i 1001 -f 1002
-$ node simple --inicio 1001 --fin 1002
+$ node rango.js --inicio 1001 --fin 1002
 ```
 
 ## Basedatos
