@@ -18,7 +18,7 @@ const main = async () => {
                 delete resultado["nombreCompleto"];
 
                 // agregamos los datos a la colección
-                await addCedulaSafe(resultado);
+                await addCedula(resultado);
             } else {
                 console.log(`${i} no registrada`);
             }
