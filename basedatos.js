@@ -1,35 +1,44 @@
 const mongoose = require("mongoose");
-const addCedula = require("./mongodb");
+const {initialize, add, disconnect} = require("./mongodb");
 const getCedula = require("./get-cedula");
 
 const rango = {
-    inicio: 1000,
-    fin: 1500
+  inicio: 1000,
+  fin: 1010
 };
 
-// debemos crear una función async para usar await
-const main = async () => {
+// creamos una conexión a la base de datos
+initialize('mongodb://localhost:27017/cedulas?authSource=admin', {
+  useNewUrlParser: true,
+  user: 'usuario',
+  pass: 'secr3t',
+  dbName: 'cedulas',
+})
+.then(async () => {
+  try {
     for (let i = rango.inicio; i <= rango.fin; i++) {
-        try {
-            const { presente, resultado } = JSON.parse(await getCedula(i));
-            if (presente) {
-                // eliminamos algunos datos redundantes o irrelevantes
-                delete resultado["id"];
-                delete resultado["nombreCompleto"];
+      // getCedula nos retorna un JSON plano, lo convertimos con parse,
+      // recuperamos presente y resultado por destructuracion
+      const { presente, resultado } = JSON.parse(await getCedula(i));
+      if (presente) {
+        // eliminamos algunos datos redundantes o irrelevantes
+        delete resultado["id"];
+        delete resultado["nombreCompleto"];
 
-                // agregamos los datos a la colección
-                await addCedula(resultado);
-            } else {
-                console.log(`${i} no registrada`);
-            }
-        } catch (e) {
-            console.log("error =>", e);
-        } // try ... catch ...
+        // agregamos los datos a la colección
+        await add(resultado);
+      } else {
+        console.log(`${i} no registrada`);
+      }
     } // for ...
-
-    mongoose.disconnect(() => {
-        console.log('Conexión a la base de datos cerrada');
-    })
-}; // main ...
-
-main();
+    disconnect()
+    .then(() => console.log("Desconectado"))
+    .catch(e => console.log("Error al desconectar:", e))
+  } catch (e) {
+    console.log("error =>", e);
+  }
+})
+.catch(e => {
+  console.log("No conectado");
+})
+;
