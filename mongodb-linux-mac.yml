@@ -12,4 +12,4 @@ services:
       - "27017:27017"
 
     volumes:
-      - f:\docker-volumes\mongodb\db:/data/db
+      - /var/docker-volumes/mongodb/db:/data/db
